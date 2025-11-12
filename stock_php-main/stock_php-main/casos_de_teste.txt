@@ -1,0 +1,284 @@
+ENTREGA 08 - DESCRITIVO DE CASOS DE TESTE DE SOFTWARE
+Sistema de Gestao de Estoque de Biblioteca
+
+==============================================================================
+8.1 - CASOS DE TESTE
+==============================================================================
+
+------------------------------------------------------------------------------
+CT001 - TESTE DE AUTENTICACAO COM CREDENCIAIS VALIDAS
+------------------------------------------------------------------------------
+Requisito Funcional: RF001, RF002, RF004
+Pre-condicoes: Usuario cadastrado no banco de dados
+Passos:
+  1. Acessar a pagina de login (login.php)
+  2. Inserir usuario: "ana.silva"
+  3. Inserir senha: "123456"
+  4. Clicar no botao "Entrar"
+Resultado Esperado: Usuario e autenticado e redirecionado para interface principal
+Pos-condicoes: Sessao do usuario e criada, nome do usuario e exibido no header
+
+------------------------------------------------------------------------------
+CT002 - TESTE DE AUTENTICACAO COM CREDENCIAIS INVALIDAS
+------------------------------------------------------------------------------
+Requisito Funcional: RF003
+Pre-condicoes: Pagina de login carregada
+Passos:
+  1. Acessar a pagina de login
+  2. Inserir usuario: "usuario.invalido"
+  3. Inserir senha: "senhaerrada"
+  4. Clicar no botao "Entrar"
+Resultado Esperado: Mensagem de erro "Usuario nao encontrado" ou "Senha incorreta"
+Pos-condicoes: Usuario permanece na tela de login
+
+------------------------------------------------------------------------------
+CT003 - TESTE DE LOGOUT
+------------------------------------------------------------------------------
+Requisito Funcional: RF007, RF008
+Pre-condicoes: Usuario autenticado
+Passos:
+  1. Na interface principal, clicar no botao "Sair"
+Resultado Esperado: Sessao destruida, usuario redirecionado para tela de login
+Pos-condicoes: Mensagem de sucesso "Logout realizado com sucesso!"
+
+------------------------------------------------------------------------------
+CT004 - TESTE DE ACESSO SEM AUTENTICACAO
+------------------------------------------------------------------------------
+Requisito Funcional: RF034, RF035
+Pre-condicoes: Usuario nao autenticado
+Passos:
+  1. Tentar acessar diretamente index.php sem login
+  2. Tentar acessar cadastro_livros.php sem login
+  3. Tentar acessar gestao_estoque.php sem login
+Resultado Esperado: Redirecionamento automatico para pagina de login
+Pos-condicoes: Usuario permanece nao autenticado
+
+------------------------------------------------------------------------------
+CT005 - CADASTRO DE NOVO LIVRO COM DADOS VALIDOS
+------------------------------------------------------------------------------
+Requisito Funcional: RF015, RF020
+Pre-condicoes: Usuario autenticado, na interface de cadastro de livros
+Passos:
+  1. Clicar em "Novo Livro"
+  2. Preencher titulo: "Teste de Software"
+  3. Preencher autor: "Autor Teste"
+  4. Preencher ISBN: "978-1234567890"
+  5. Preencher categoria: "Tecnologia"
+  6. Preencher estoque atual: 10
+  7. Preencher estoque minimo: 5
+  8. Clicar em "Salvar"
+Resultado Esperado: Livro cadastrado com sucesso, mensagem de confirmacao
+Pos-condicoes: Livro aparece na listagem de livros
+
+------------------------------------------------------------------------------
+CT006 - CADASTRO DE LIVRO COM DADOS INVALIDOS
+------------------------------------------------------------------------------
+Requisito Funcional: RF018, RF019
+Pre-condicoes: Usuario autenticado, modal de novo livro aberto
+Passos:
+  1. Deixar campo titulo vazio
+  2. Preencher autor: "Autor Teste"
+  3. Preencher ISBN: "978-1234567890"
+  4. Clicar em "Salvar"
+Resultado Esperado: Mensagem de erro "Titulo e obrigatorio"
+Pos-condicoes: Livro nao e cadastrado
+
+------------------------------------------------------------------------------
+CT007 - CADASTRO DE LIVRO COM ISBN DUPLICADO
+------------------------------------------------------------------------------
+Requisito Funcional: RF018, RF019
+Pre-condicoes: ISBN "978-8535908774" ja existe no banco
+Passos:
+  1. Tentar cadastrar novo livro com ISBN: "978-8535908774"
+Resultado Esperado: Mensagem de erro "ISBN ja cadastrado no sistema"
+Pos-condicoes: Livro nao e cadastrado
+
+------------------------------------------------------------------------------
+CT008 - EDICAO DE LIVRO EXISTENTE
+------------------------------------------------------------------------------
+Requisito Funcional: RF016
+Pre-condicoes: Livro cadastrado no sistema
+Passos:
+  1. Clicar em "Editar" no livro desejado
+  2. Alterar o estoque minimo para 10
+  3. Clicar em "Salvar"
+Resultado Esperado: Mensagem "Livro atualizado com sucesso!"
+Pos-condicoes: Dados do livro sao atualizados na listagem
+
+------------------------------------------------------------------------------
+CT009 - EXCLUSAO DE LIVRO
+------------------------------------------------------------------------------
+Requisito Funcional: RF017
+Pre-condicoes: Livro cadastrado sem movimentacoes
+Passos:
+  1. Clicar em "Excluir" no livro desejado
+  2. Confirmar exclusao no dialogo
+Resultado Esperado: Mensagem "Livro excluido com sucesso!"
+Pos-condicoes: Livro removido da listagem
+
+------------------------------------------------------------------------------
+CT010 - BUSCA DE LIVROS POR TITULO
+------------------------------------------------------------------------------
+Requisito Funcional: RF013, RF014
+Pre-condicoes: Varios livros cadastrados
+Passos:
+  1. No campo de busca, digitar "Dom Casmurro"
+  2. Clicar em "Buscar"
+Resultado Esperado: Listagem filtrada mostrando apenas livros com "Dom Casmurro"
+Pos-condicoes: Outros livros nao aparecem na listagem
+
+------------------------------------------------------------------------------
+CT011 - LISTAGEM AUTOMATICA DE LIVROS
+------------------------------------------------------------------------------
+Requisito Funcional: RF011, RF012
+Pre-condicoes: Livros cadastrados no banco
+Passos:
+  1. Acessar interface de cadastro de livros
+Resultado Esperado: Todos os livros sao carregados automaticamente na tabela
+Pos-condicoes: Tabela populada com dados do banco
+
+------------------------------------------------------------------------------
+CT012 - REGISTRO DE ENTRADA DE ESTOQUE
+------------------------------------------------------------------------------
+Requisito Funcional: RF024, RF025, RF026, RF028, RF031, RF032
+Pre-condicoes: Usuario autenticado, livro cadastrado
+Passos:
+  1. Acessar gestao de estoque
+  2. Selecionar livro "Dom Casmurro"
+  3. Selecionar tipo: "Entrada"
+  4. Informar quantidade: 10
+  5. Informar data: data atual
+  6. Informar observacao: "Compra"
+  7. Clicar em "Registrar Movimentacao"
+Resultado Esperado: Mensagem "Movimentacao registrada com sucesso!"
+Pos-condicoes: Estoque do livro aumenta em 10, movimentacao aparece no historico
+
+------------------------------------------------------------------------------
+CT013 - REGISTRO DE SAIDA DE ESTOQUE COM ALERTA
+------------------------------------------------------------------------------
+Requisito Funcional: RF024, RF025, RF029, RF030
+Pre-condicoes: Livro com estoque atual 4 e minimo 5
+Passos:
+  1. Selecionar livro com estoque 4
+  2. Selecionar tipo: "Saida"
+  3. Informar quantidade: 2
+  4. Clicar em "Registrar Movimentacao"
+Resultado Esperado: Movimentacao registrada + ALERTA de estoque abaixo do minimo
+Pos-condicoes: Estoque fica em 2, alerta exibido na tela
+
+------------------------------------------------------------------------------
+CT014 - TENTATIVA DE SAIDA MAIOR QUE ESTOQUE DISPONIVEL
+------------------------------------------------------------------------------
+Requisito Funcional: RF028
+Pre-condicoes: Livro com estoque atual 5
+Passos:
+  1. Selecionar livro
+  2. Selecionar tipo: "Saida"
+  3. Informar quantidade: 10
+  4. Clicar em "Registrar Movimentacao"
+Resultado Esperado: Mensagem de erro "Quantidade de saida maior que estoque disponivel"
+Pos-condicoes: Movimentacao nao e registrada, estoque permanece inalterado
+
+------------------------------------------------------------------------------
+CT015 - ORDENACAO ALFABETICA DE LIVROS
+------------------------------------------------------------------------------
+Requisito Funcional: RF021, RF022
+Pre-condicoes: Multiplos livros cadastrados
+Passos:
+  1. Acessar gestao de estoque
+  2. Observar a ordem dos livros na tabela
+Resultado Esperado: Livros listados em ordem alfabetica por titulo (Bubble Sort)
+Pos-condicoes: Ordem alfabetica mantida independente de novos cadastros
+
+------------------------------------------------------------------------------
+CT016 - EXIBICAO DE HISTORICO DE MOVIMENTACOES
+------------------------------------------------------------------------------
+Requisito Funcional: RF031, RF032, RF033
+Pre-condicoes: Movimentacoes registradas no sistema
+Passos:
+  1. Acessar gestao de estoque
+  2. Rolar para secao "Historico de Movimentacoes"
+Resultado Esperado: Ultimas 20 movimentacoes exibidas com data, tipo, livro e responsavel
+Pos-condicoes: Historico completo e rastreavel
+
+------------------------------------------------------------------------------
+CT017 - VALIDACAO DE CAMPOS OBRIGATORIOS NA MOVIMENTACAO
+------------------------------------------------------------------------------
+Requisito Funcional: RF023, RF024, RF025, RF026
+Pre-condicoes: Na tela de gestao de estoque
+Passos:
+  1. Tentar registrar movimentacao sem selecionar livro
+  2. Tentar registrar sem informar quantidade
+  3. Tentar registrar sem selecionar tipo
+Resultado Esperado: Mensagens de erro especificas para cada campo
+Pos-condicoes: Movimentacao nao e registrada
+
+------------------------------------------------------------------------------
+CT018 - NAVEGACAO ENTRE INTERFACES
+------------------------------------------------------------------------------
+Requisito Funcional: RF009, RF010, RF036
+Pre-condicoes: Usuario logado
+Passos:
+  1. Da interface principal, acessar Cadastro de Livros
+  2. Clicar em "Voltar ao Menu"
+  3. Acessar Gestao de Estoque
+  4. Clicar em "Voltar ao Menu"
+Resultado Esperado: Navegacao fluida entre todas as interfaces
+Pos-condicoes: Usuario sempre consegue retornar ao menu principal
+
+==============================================================================
+8.2 - FERRAMENTAS E AMBIENTES DE TESTE
+==============================================================================
+
+AMBIENTE DE DESENVOLVIMENTO/TESTE:
+----------------------------------
+- Sistema Operacional: macOS Darwin 24.6.0
+- Servidor Web: Apache 2.4 ou PHP Built-in Server
+- PHP: Versao 7.4 ou superior
+- MySQL: Versao 5.7 ou superior
+- Navegador: Google Chrome, Firefox ou Safari (versoes recentes)
+
+FERRAMENTAS UTILIZADAS:
+-----------------------
+1. Servidor de Desenvolvimento:
+   - PHP Built-in Server (php -S localhost:8000)
+   - XAMPP / MAMP / WAMP (conforme sistema operacional)
+
+2. Gerenciador de Banco de Dados:
+   - phpMyAdmin (interface web)
+   - MySQL Workbench (aplicacao desktop)
+   - HeidiSQL (Windows)
+
+3. Editor de Codigo:
+   - Visual Studio Code
+   - PHPStorm
+   - Sublime Text
+
+4. Teste de Interface:
+   - Navegadores com DevTools para inspecao
+   - Teste manual de formularios e validacoes
+   - Teste de responsividade (diferentes resolucoes)
+
+5. Teste de Banco de Dados:
+   - Queries diretas via phpMyAdmin/Workbench
+   - Verificacao de integridade referencial
+   - Teste de constraints e foreign keys
+
+METODOLOGIA DE TESTE:
+---------------------
+- Teste Manual de Interface (UI Testing)
+- Teste Funcional (Functional Testing)
+- Teste de Integracao (Integration Testing)
+- Teste de Validacao de Dados (Data Validation Testing)
+- Teste de Sessao e Autenticacao (Authentication Testing)
+- Teste de Banco de Dados (Database Testing)
+
+CRITERIOS DE ACEITACAO:
+-----------------------
+- Todos os requisitos funcionais devem ser atendidos
+- Sistema deve ser intuitivo e facil de usar
+- Validacoes de dados devem funcionar corretamente
+- Alertas de estoque minimo devem ser acionados automaticamente
+- Historico de movimentacoes deve ser completo e rastreavel
+- Nao deve haver erros de SQL ou PHP durante a execucao
+- Interface deve ser responsiva e funcionar em diferentes navegadores

@@ -1,0 +1,266 @@
+/**
+ * ARQUIVO CSS - ESTILIZACAO DO SISTEMA
+ *
+ * Este arquivo foi intencionalmente deixado vazio/minimalista para que voce
+ * desenvolva sua propria estilizacao.
+ *
+ * IMPORTANTE: Nao copie estilos prontos. Crie sua propria identidade visual!
+ *
+ * Abaixo estao apenas SUGESTOES de areas que voce pode estilizar.
+ * A implementacao e por sua conta.
+ */
+
+
+/* =============================================================================
+   RESET E CONFIGURACOES BASICAS
+   =============================================================================
+
+   Dica: e comum "resetar" os estilos padrao do navegador para ter mais controle.
+   Voce pode pesquisar sobre: CSS Reset, Normalize.css, ou criar o seu proprio.
+*/
+
+
+
+
+/* =============================================================================
+   LAYOUT GERAL
+   =============================================================================
+
+   Sugestoes de elementos para estilizar:
+   - body (cor de fundo, fonte, altura minima)
+   - container (largura maxima, centralizacao)
+   - espacamentos gerais
+*/
+
+
+
+
+/* =============================================================================
+   FORMULARIOS
+   =============================================================================
+
+   Elementos que normalmente precisam de estilizacao:
+   - .form-group (agrupamento de label + input)
+   - label (rotulos dos campos)
+   - input, select, textarea (campos de entrada)
+   - estados: :focus, :hover, :disabled
+   - validacoes: :valid, :invalid
+*/
+
+
+
+
+/* =============================================================================
+   BOTOES
+   =============================================================================
+
+   Voce provavelmente precisara de diferentes tipos de botoes:
+   - .btn (botao generico)
+   - .btn-primary (acao principal)
+   - .btn-secondary (acao secundaria)
+   - .btn-success (sucesso/confirmar)
+   - .btn-danger (perigo/excluir)
+   - .btn-warning (alerta/atencao)
+
+   Nao esqueca de estilizar os estados :hover, :active, :disabled
+*/
+
+
+
+
+/* =============================================================================
+   ALERTAS E MENSAGENS
+   =============================================================================
+
+   Mensagens de feedback ao usuario:
+   - .alert (base para mensagens)
+   - .alert-success (sucesso)
+   - .alert-error (erro)
+   - .alert-warning (aviso)
+
+   Dica: use cores que comuniquem visualmente o tipo de mensagem
+   (verde = sucesso, vermelho = erro, amarelo = alerta)
+*/
+
+
+
+
+/* =============================================================================
+   HEADER/CABECALHO
+   =============================================================================
+
+   Area superior do sistema:
+   - .header (container do cabecalho)
+   - titulo da pagina
+   - informacoes do usuario logado
+   - botao de logout
+
+   Pense em: alinhamento, espacamento, contraste
+*/
+
+
+
+
+/* =============================================================================
+   MENU/NAVEGACAO
+   =============================================================================
+
+   Se voce criar um menu de navegacao (cards, lista, etc):
+   - .menu-grid ou .menu-list
+   - .menu-card ou .menu-item
+   - links de navegacao
+   - icones (se usar)
+
+   Considere usar: Grid, Flexbox, ou outra tecnica de layout
+*/
+
+
+
+
+/* =============================================================================
+   CARDS/PAINEIS
+   =============================================================================
+
+   Containers de conteudo:
+   - .card (painel generico)
+   - .card-header (cabecalho do card)
+   - .card-body (corpo do card)
+   - .card-footer (rodape do card)
+
+   Pense em: bordas, sombras, espacamento interno
+*/
+
+
+
+
+/* =============================================================================
+   TABELAS
+   =============================================================================
+
+   Para exibir dados em tabelas:
+   - table (elemento table)
+   - thead, tbody, tfoot
+   - th (cabecalhos)
+   - td (celulas)
+   - tr (linhas)
+
+   Considere: bordas, zebra striping (linhas alternadas), hover em linhas
+*/
+
+
+
+
+/* =============================================================================
+   MODAL/DIALOGO
+   =============================================================================
+
+   Se voce usar modals/pop-ups:
+   - .modal (overlay de fundo)
+   - .modal-content (caixa do modal)
+   - .modal-header (cabecalho)
+   - .modal-body (corpo)
+   - .modal-footer (rodape)
+   - .close-modal (botao fechar)
+
+   Dica: o modal geralmente precisa de position: fixed e z-index alto
+*/
+
+
+
+
+/* =============================================================================
+   BUSCA/FILTROS
+   =============================================================================
+
+   Area de busca e filtros:
+   - .search-box (container de busca)
+   - campo de texto de busca
+   - botao de buscar
+   - filtros adicionais
+
+   Considere: layout horizontal vs vertical, responsividade
+*/
+
+
+
+
+/* =============================================================================
+   ACOES EM TABELAS
+   =============================================================================
+
+   Botoes de acao em listagens (editar, excluir, visualizar):
+   - .actions (container de acoes)
+   - botoes pequenos de acao
+
+   Dica: botoes de acao geralmente sao menores que botoes normais
+*/
+
+
+
+
+/* =============================================================================
+   STATUS E INDICADORES
+   =============================================================================
+
+   Indicadores visuais de status:
+   - .status (badge de status)
+   - .status-ok, .status-warning, .status-error
+   - .badge (emblemas)
+   - .label (rotulos)
+
+   Use cores para comunicar o estado visualmente
+*/
+
+
+
+
+/* =============================================================================
+   RESPONSIVIDADE
+   =============================================================================
+
+   Media queries para diferentes tamanhos de tela:
+
+   Breakpoints comuns:
+   - Celular: ate 576px
+   - Tablet: 577px ate 768px
+   - Desktop pequeno: 769px ate 992px
+   - Desktop grande: 993px+
+
+   Use @media (max-width: XXXpx) { ... }
+*/
+
+
+
+
+/* =============================================================================
+   UTILITARIOS
+   =============================================================================
+
+   Classes utilitarias que podem ser uteis:
+   - .text-center, .text-left, .text-right
+   - .mt-1, .mt-2 (margin-top)
+   - .mb-1, .mb-2 (margin-bottom)
+   - .p-1, .p-2 (padding)
+   - .d-none (display: none)
+   - .d-flex (display: flex)
+
+   Considere: quais utilitarios voce realmente precisa?
+*/
+
+
+
+
+/* =============================================================================
+   SUAS CLASSES CUSTOMIZADAS
+   =============================================================================
+
+   Adicione aqui suas proprias classes conforme a necessidade do projeto.
+
+   Dicas:
+   - Use nomes descritivos e consistentes
+   - Evite estilos inline no HTML
+   - Organize o codigo (agrupe classes relacionadas)
+   - Comente secoes complexas
+   - Teste em diferentes navegadores
+   - Pense em acessibilidade (contraste, tamanhos, foco)
+*/

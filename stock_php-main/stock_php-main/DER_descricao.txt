@@ -1,0 +1,98 @@
+ENTREGA 02 - DIAGRAMA ENTIDADE RELACIONAMENTO (DER)
+Sistema de Gestao de Estoque de Biblioteca
+
+==============================================================================
+DESCRICAO DO MODELO DE DADOS
+==============================================================================
+
+ENTIDADES E ATRIBUTOS:
+
+1. USUARIOS
+   - id (PK, INT, AUTO_INCREMENT)
+   - nome (VARCHAR(100), NOT NULL)
+   - usuario (VARCHAR(50), NOT NULL, UNIQUE)
+   - senha (VARCHAR(255), NOT NULL)
+   - data_cadastro (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+2. LIVROS
+   - id (PK, INT, AUTO_INCREMENT)
+   - titulo (VARCHAR(200), NOT NULL)
+   - autor (VARCHAR(150), NOT NULL)
+   - isbn (VARCHAR(20), UNIQUE)
+   - editora (VARCHAR(100))
+   - ano_publicacao (INT)
+   - categoria (VARCHAR(50))
+   - estoque_atual (INT, NOT NULL, DEFAULT 0)
+   - estoque_minimo (INT, NOT NULL, DEFAULT 5)
+   - data_cadastro (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+3. MOVIMENTACOES
+   - id (PK, INT, AUTO_INCREMENT)
+   - livro_id (FK, INT, NOT NULL) -> REFERENCIAS livros(id)
+   - usuario_id (FK, INT, NOT NULL) -> REFERENCIAS usuarios(id)
+   - tipo (ENUM('entrada', 'saida'), NOT NULL)
+   - quantidade (INT, NOT NULL)
+   - data_movimentacao (DATE, NOT NULL)
+   - data_registro (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+   - observacao (TEXT)
+
+==============================================================================
+RELACIONAMENTOS:
+==============================================================================
+
+USUARIOS (1) -----> (N) MOVIMENTACOES
+  - Um usuario pode realizar varias movimentacoes
+  - Uma movimentacao e realizada por um unico usuario
+  - Relacionamento: usuario_id em MOVIMENTACOES referencia id em USUARIOS
+
+LIVROS (1) -----> (N) MOVIMENTACOES
+  - Um livro pode ter varias movimentacoes
+  - Uma movimentacao refere-se a um unico livro
+  - Relacionamento: livro_id em MOVIMENTACOES referencia id em LIVROS
+
+==============================================================================
+CARDINALIDADE:
+==============================================================================
+
+USUARIOS (1,N) -----> (0,N) MOVIMENTACOES
+LIVROS (1,N) -----> (0,N) MOVIMENTACOES
+
+==============================================================================
+REPRESENTACAO ASCII DO DER:
+==============================================================================
+
++-------------------+
+|     USUARIOS      |
++-------------------+
+| PK id             |
+|    nome           |
+|    usuario (UK)   |
+|    senha          |
+|    data_cadastro  |
++-------------------+
+         |
+         | 1
+         |
+         | realiza
+         |
+         | N
+         v
++-------------------+        +-------------------+
+|  MOVIMENTACOES    |   N    |      LIVROS       |
++-------------------+--------|+-------------------+
+| PK id             |   de   || PK id             |
+| FK usuario_id     |<-------|| titulo            |
+| FK livro_id       |    1   ||    autor          |
+|    tipo           |        ||    isbn (UK)      |
+|    quantidade     |        ||    editora        |
+|    data_movim.    |        ||    ano_publicacao |
+|    data_registro  |        ||    categoria      |
+|    observacao     |        ||    estoque_atual  |
++-------------------+        ||    estoque_minimo |
+                             ||    data_cadastro  |
+                             |+-------------------+
+
+LEGENDA:
+PK = Primary Key (Chave Primaria)
+FK = Foreign Key (Chave Estrangeira)
+UK = Unique Key (Chave Unica)

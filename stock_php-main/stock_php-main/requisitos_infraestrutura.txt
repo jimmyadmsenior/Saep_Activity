@@ -1,0 +1,220 @@
+ENTREGA 09 - LISTA DE REQUISITOS DE INFRAESTRUTURA
+Sistema de Gestao de Estoque de Biblioteca
+
+==============================================================================
+9.1 - REQUISITOS DE INFRAESTRUTURA
+==============================================================================
+
+------------------------------------------------------------------------------
+9.1.1 - SISTEMA GERENCIADOR DE BANCO DE DADOS (SGBD)
+------------------------------------------------------------------------------
+Nome: MySQL
+Versao: 5.7 ou superior (Recomendado: MySQL 8.0)
+Detalhes:
+  - Engine de armazenamento: InnoDB
+  - Charset: utf8mb4
+  - Collation: utf8mb4_unicode_ci
+  - Porta padrao: 3306
+  - Requisitos minimos de memoria: 512 MB RAM
+  - Espaco em disco: 100 MB (considerando crescimento do banco)
+
+Alternativas compativeis:
+  - MariaDB 10.3 ou superior
+  - Percona Server 5.7 ou superior
+
+------------------------------------------------------------------------------
+9.1.2 - LINGUAGEM DE PROGRAMACAO
+------------------------------------------------------------------------------
+Nome: PHP
+Versao: 7.4 ou superior (Recomendado: PHP 8.0 ou superior)
+Detalhes:
+  - Modo de execucao: CGI/FastCGI
+  - Extensoes necessarias:
+    * PDO (PHP Data Objects)
+    * pdo_mysql (Driver MySQL para PDO)
+    * mbstring (Manipulacao de strings multibyte)
+    * session (Gerenciamento de sessoes)
+    * json (Manipulacao de JSON)
+    * date (Funcoes de data e hora)
+
+Configuracoes recomendadas no php.ini:
+  - memory_limit = 256M
+  - upload_max_filesize = 10M
+  - post_max_size = 10M
+  - max_execution_time = 300
+  - session.gc_maxlifetime = 1440
+  - date.timezone = America/Sao_Paulo
+
+------------------------------------------------------------------------------
+9.1.3 - SISTEMA OPERACIONAL
+------------------------------------------------------------------------------
+Nome: macOS
+Versao: Darwin 24.6.0
+Detalhes:
+  - Arquitetura: x64 ou ARM64 (Apple Silicon)
+  - Memoria RAM minima: 4 GB (Recomendado: 8 GB)
+  - Espaco em disco: 500 MB para aplicacao e dados
+  - Resolucao de tela minima: 1280x720
+
+Sistemas operacionais compativeis:
+  - Windows 10 ou superior
+  - Linux (Ubuntu 20.04, Debian 10, CentOS 7 ou superiores)
+  - macOS 10.15 Catalina ou superior
+
+==============================================================================
+9.2 - REQUISITOS ADICIONAIS DE SOFTWARE
+==============================================================================
+
+SERVIDOR WEB:
+-------------
+- Apache HTTP Server 2.4 ou superior
+  OU
+- Nginx 1.18 ou superior
+  OU
+- PHP Built-in Server (apenas para desenvolvimento)
+
+Modulos necessarios (Apache):
+  - mod_rewrite (para URLs amigaveis)
+  - mod_php ou PHP-FPM
+
+NAVEGADORES WEB SUPORTADOS:
+---------------------------
+- Google Chrome 90 ou superior
+- Mozilla Firefox 88 ou superior
+- Safari 14 ou superior
+- Microsoft Edge 90 ou superior
+
+==============================================================================
+9.3 - REQUISITOS DE REDE
+==============================================================================
+
+Para ambiente de desenvolvimento/teste local:
+  - Localhost (127.0.0.1)
+  - Porta HTTP: 80 ou 8000 (customizavel)
+  - Sem necessidade de conexao externa com internet
+
+Para ambiente de producao (se aplicavel):
+  - Conexao estavel com internet
+  - Certificado SSL/TLS para HTTPS
+  - Dominio ou subdominio configurado
+  - Porta HTTPS: 443
+  - Firewall configurado permitindo trafego HTTP/HTTPS
+
+==============================================================================
+9.4 - FERRAMENTAS DE ADMINISTRACAO
+==============================================================================
+
+GERENCIAMENTO DE BANCO DE DADOS:
+---------------------------------
+- phpMyAdmin 5.0 ou superior
+  OU
+- MySQL Workbench 8.0 ou superior
+  OU
+- HeidiSQL 11.0 ou superior (Windows)
+  OU
+- DBeaver Community Edition
+
+FERRAMENTAS DE DESENVOLVIMENTO:
+-------------------------------
+- Editor de codigo (Visual Studio Code, PHPStorm, Sublime Text)
+- Git (para controle de versao) - Versao 2.30 ou superior
+
+==============================================================================
+9.5 - ESTRUTURA DE DIRETORIOS
+==============================================================================
+
+Estrutura de pastas do projeto:
+/biblioteca_pratica/
+  |
+  |-- sistema/                    (Codigo-fonte da aplicacao)
+  |     |-- config.php            (Configuracoes do banco)
+  |     |-- login.php             (Tela de login)
+  |     |-- autenticar.php        (Processamento de login)
+  |     |-- logout.php            (Processamento de logout)
+  |     |-- index.php             (Interface principal)
+  |     |-- cadastro_livros.php   (Cadastro de livros)
+  |     |-- gestao_estoque.php    (Gestao de estoque)
+  |     |-- style.css             (Estilos CSS)
+  |
+  |-- ENTREGA_01_requisitos_funcionais.txt
+  |-- ENTREGA_02_DER_descricao.txt
+  |-- ENTREGA_03_script_banco.sql
+  |-- ENTREGA_08_casos_de_teste.txt
+  |-- ENTREGA_09_requisitos_infraestrutura.txt
+
+==============================================================================
+9.6 - CONFIGURACAO E INSTALACAO
+==============================================================================
+
+PASSOS PARA INSTALACAO:
+-----------------------
+1. Instalar PHP 7.4+ com extensoes PDO e pdo_mysql
+2. Instalar MySQL 5.7+ ou MariaDB 10.3+
+3. Instalar servidor web (Apache/Nginx) ou usar PHP Built-in Server
+4. Criar banco de dados executando ENTREGA_03_script_banco.sql
+5. Configurar credenciais do banco em sistema/config.php
+6. Configurar permissoes de leitura/escrita nas pastas
+7. Acessar sistema via navegador: http://localhost/sistema/login.php
+
+CONFIGURACAO DO BANCO DE DADOS:
+--------------------------------
+Arquivo: sistema/config.php
+Parametros:
+  - DB_HOST: localhost (ou IP do servidor MySQL)
+  - DB_NAME: biblioteca_db
+  - DB_USER: root (ou usuario com privilegios)
+  - DB_PASS: senha do usuario (em branco para desenvolvimento local)
+  - DB_CHARSET: utf8mb4
+
+USUARIOS PADRAO DO SISTEMA:
+----------------------------
+Usuario: ana.silva
+Senha: 123456
+
+Usuario: carlos.lima
+Senha: 123456
+
+Usuario: maria.costa
+Senha: 123456
+
+==============================================================================
+9.7 - REQUISITOS DE SEGURANCA
+==============================================================================
+
+- PHP com register_globals desabilitado
+- Validacao de entrada de dados (implementada via htmlspecialchars)
+- Protecao contra SQL Injection (uso de prepared statements com PDO)
+- Gerenciamento seguro de sessoes
+- Senhas armazenadas com hash (password_hash/password_verify)
+- Verificacao de autenticacao em todas as paginas protegidas
+
+==============================================================================
+9.8 - MANUTENCAO E BACKUP
+==============================================================================
+
+BACKUP DO BANCO DE DADOS:
+--------------------------
+Comando: mysqldump -u root -p biblioteca_db > backup_biblioteca_db.sql
+Frequencia recomendada: Diaria (ambiente producao)
+
+LOGS DO SISTEMA:
+----------------
+- Logs de erro do PHP: error_log (conforme configuracao php.ini)
+- Logs de acesso do servidor web
+- Logs de queries MySQL (se habilitado)
+
+==============================================================================
+OBSERVACOES FINAIS:
+==============================================================================
+
+Este sistema foi desenvolvido como aplicacao web usando arquitetura MVC
+simplificada, com PHP puro (sem frameworks), HTML5, CSS3 e JavaScript vanilla.
+O sistema e compativel com diferentes ambientes e pode ser facilmente
+implantado em servidores de hospedagem compartilhada ou VPS.
+
+Para ambientes de producao, recomenda-se:
+- Configurar HTTPS com certificado SSL
+- Implementar politica de backup automatizado
+- Configurar logs de auditoria
+- Implementar rate limiting para prevenir abuso
+- Revisar e fortalecer configuracoes de seguranca

@@ -1,0 +1,363 @@
+DESCRIÇÃO DO DIAGRAMA ENTIDADE-RELACIONAMENTO (DER)
+SISTEMA DE GESTÃO DE ESTOQUE PARA MERCADO
+================================================================================
+
+Sistema: Gestão de Estoque para Mercado
+Data: 12/11/2025
+Versão: 1.0
+SGBD: MySQL 5.7+
+Charset: utf8mb4 (Unicode completo)
+Collation: utf8mb4_unicode_ci
+
+================================================================================
+VISÃO GERAL DO MODELO
+================================================================================
+
+O modelo de dados é composto por 3 (três) entidades principais que representam:
+- USUÁRIOS: Pessoas autorizadas a usar o sistema
+- PRODUTOS: Itens comercializados no mercado
+- MOVIMENTAÇÕES: Registros de entrada e saída de estoque
+
+O relacionamento entre as entidades segue o padrão de negócio onde:
+- Cada usuário pode realizar múltiplas movimentações
+- Cada produto pode ter múltiplas movimentações
+- Cada movimentação pertence a um único usuário e um único produto
+
+================================================================================
+ENTIDADE: USUARIOS
+================================================================================
+
+Descrição: Armazena dados dos usuários autorizados a operar o sistema
+
+Atributos:
+- id (Chave Primária)
+  * Tipo: INT
+  * Características: AUTO_INCREMENT, NOT NULL
+  * Descrição: Identificador único do usuário
+
+- nome
+  * Tipo: VARCHAR(100)
+  * Características: NOT NULL
+  * Descrição: Nome completo do usuário
+  * Exemplo: "Maria da Silva Santos"
+
+- usuario
+  * Tipo: VARCHAR(50)
+  * Características: NOT NULL, UNIQUE
+  * Descrição: Nome de usuário para login (login único)
+  * Exemplo: "maria.silva"
+
+- senha
+  * Tipo: VARCHAR(255)
+  * Características: NOT NULL
+  * Descrição: Senha criptografada com password_hash()
+  * Exemplo: "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
+
+- data_cadastro
+  * Tipo: DATETIME
+  * Características: DEFAULT CURRENT_TIMESTAMP
+  * Descrição: Data e hora do cadastro do usuário
+  * Exemplo: "2025-11-12 14:30:00"
+
+Restrições:
+- Chave Primária: id
+- Índice Único: usuario
+- Validações: nome e usuario não podem ser vazios
+
+================================================================================
+ENTIDADE: PRODUTOS
+================================================================================
+
+Descrição: Armazena informações dos produtos comercializados no mercado
+
+Atributos:
+- id (Chave Primária)
+  * Tipo: INT
+  * Características: AUTO_INCREMENT, NOT NULL
+  * Descrição: Identificador único do produto
+
+- nome
+  * Tipo: VARCHAR(100)
+  * Características: NOT NULL
+  * Descrição: Nome do produto
+  * Exemplo: "Arroz Tipo 1 Uncle Bens 5kg"
+
+- codigo_barras
+  * Tipo: VARCHAR(50)
+  * Características: UNIQUE (permite NULL)
+  * Descrição: Código de barras do produto (EAN-13 ou similar)
+  * Exemplo: "7891234567890"
+
+- categoria
+  * Tipo: VARCHAR(50)
+  * Características: NOT NULL
+  * Descrição: Categoria do produto
+  * Valores permitidos: "Alimentos", "Bebidas", "Higiene", "Limpeza", 
+    "Hortifruti", "Padaria", "Açougue", "Outros"
+
+- marca
+  * Tipo: VARCHAR(50)
+  * Características: Permite NULL
+  * Descrição: Marca ou fabricante do produto
+  * Exemplo: "Uncle Ben's"
+
+- preco_custo
+  * Tipo: DECIMAL(10,2)
+  * Características: Permite NULL
+  * Descrição: Preço de custo do produto em reais
+  * Exemplo: 12.50 (R$ 12,50)
+
+- preco_venda
+  * Tipo: DECIMAL(10,2)
+  * Características: Permite NULL
+  * Descrição: Preço de venda do produto em reais
+  * Exemplo: 18.90 (R$ 18,90)
+
+- estoque_atual
+  * Tipo: INT
+  * Características: NOT NULL, DEFAULT 0
+  * Descrição: Quantidade atual em estoque
+  * Exemplo: 25 (25 unidades)
+
+- estoque_minimo
+  * Tipo: INT
+  * Características: NOT NULL, DEFAULT 10
+  * Descrição: Quantidade mínima para alerta de reposição
+  * Exemplo: 10 (10 unidades)
+
+- data_cadastro
+  * Tipo: DATETIME
+  * Características: DEFAULT CURRENT_TIMESTAMP
+  * Descrição: Data e hora do cadastro do produto
+  * Exemplo: "2025-11-12 14:30:00"
+
+Restrições:
+- Chave Primária: id
+- Índice Único: codigo_barras (quando informado)
+- Validações: 
+  * nome não pode ser vazio
+  * categoria deve ser uma das categorias válidas
+  * preços devem ser não-negativos
+  * estoques devem ser não-negativos
+
+================================================================================
+ENTIDADE: MOVIMENTACOES
+================================================================================
+
+Descrição: Registra todas as movimentações de entrada e saída de estoque
+
+Atributos:
+- id (Chave Primária)
+  * Tipo: INT
+  * Características: AUTO_INCREMENT, NOT NULL
+  * Descrição: Identificador único da movimentação
+
+- produto_id (Chave Estrangeira)
+  * Tipo: INT
+  * Características: NOT NULL
+  * Descrição: Referência ao produto movimentado
+  * Relacionamento: FOREIGN KEY → produtos.id
+
+- usuario_id (Chave Estrangeira)
+  * Tipo: INT
+  * Características: NOT NULL
+  * Descrição: Referência ao usuário que realizou a movimentação
+  * Relacionamento: FOREIGN KEY → usuarios.id
+
+- tipo
+  * Tipo: ENUM('entrada', 'saida')
+  * Características: NOT NULL
+  * Descrição: Tipo de movimentação
+  * Valores: "entrada" (aumenta estoque) ou "saida" (diminui estoque)
+
+- quantidade
+  * Tipo: INT
+  * Características: NOT NULL
+  * Descrição: Quantidade movimentada
+  * Exemplo: 50 (50 unidades)
+  * Regra: Sempre positivo (o tipo define se soma ou subtrai)
+
+- data_movimentacao
+  * Tipo: DATE
+  * Características: NOT NULL
+  * Descrição: Data em que ocorreu a movimentação
+  * Exemplo: "2025-11-12"
+
+- data_registro
+  * Tipo: DATETIME
+  * Características: DEFAULT CURRENT_TIMESTAMP
+  * Descrição: Data e hora do registro da movimentação no sistema
+  * Exemplo: "2025-11-12 14:30:00"
+
+- observacao
+  * Tipo: TEXT
+  * Características: Permite NULL
+  * Descrição: Observações sobre a movimentação
+  * Exemplo: "Reposição de estoque - Fornecedor ABC"
+
+Restrições:
+- Chave Primária: id
+- Chaves Estrangeiras:
+  * produto_id → produtos.id (ON DELETE CASCADE)
+  * usuario_id → usuarios.id (ON DELETE CASCADE)
+- Validações:
+  * tipo deve ser 'entrada' ou 'saida'
+  * quantidade deve ser maior que zero
+  * data_movimentacao não pode ser futura
+
+================================================================================
+RELACIONAMENTOS
+================================================================================
+
+1. USUARIOS (1) → (N) MOVIMENTACOES
+   * Cardinalidade: Um usuário pode realizar muitas movimentações
+   * Tipo: Identificador (obrigatório)
+   * Chave Estrangeira: movimentacoes.usuario_id → usuarios.id
+   * Ação de Exclusão: CASCADE (se usuário for excluído, suas movimentações também são)
+
+2. PRODUTOS (1) → (N) MOVIMENTACOES
+   * Cardinalidade: Um produto pode ter muitas movimentações
+   * Tipo: Identificador (obrigatório)
+   * Chave Estrangeira: movimentacoes.produto_id → produtos.id
+   * Ação de Exclusão: CASCADE (se produto for excluído, suas movimentações também são)
+
+================================================================================
+DIAGRAMA EM ASCII
+================================================================================
+
+┌─────────────────┐         ┌──────────────────┐         ┌─────────────────┐
+│    USUARIOS     │         │  MOVIMENTACOES   │         │    PRODUTOS     │
+├─────────────────┤         ├──────────────────┤         ├─────────────────┤
+│ PK id           │────────▶│ FK usuario_id    │◀────────│ PK id           │
+│    nome         │    1:N  │ FK produto_id    │    N:1  │    nome         │
+│    usuario      │         │ PK id            │         │    codigo_barras│
+│    senha        │         │    tipo          │         │    categoria    │
+│    data_cadastro│         │    quantidade    │         │    marca        │
+└─────────────────┘         │    data_moviment.│         │    preco_custo  │
+                            │    data_registro │         │    preco_venda  │
+                            │    observacao    │         │    estoque_atual│
+                            └──────────────────┘         │    estoque_min. │
+                                                         │    data_cadastro│
+                                                         └─────────────────┘
+
+================================================================================
+ÍNDICES RECOMENDADOS
+================================================================================
+
+Índices Únicos:
+- usuarios.usuario (garantir login único)
+- produtos.codigo_barras (quando não nulo)
+
+Índices para Performance:
+- movimentacoes.produto_id (busca por produto)
+- movimentacoes.usuario_id (busca por usuário)
+- movimentacoes.data_movimentacao (busca por período)
+- movimentacoes.tipo (filtro por tipo)
+- produtos.categoria (filtro por categoria)
+- produtos.nome (busca por nome)
+
+Índices Compostos:
+- movimentacoes (produto_id, data_movimentacao) para relatórios
+- produtos (categoria, nome) para listagem ordenada por categoria
+
+================================================================================
+REGRAS DE NEGÓCIO IMPLEMENTADAS NO MODELO
+================================================================================
+
+1. Integridade Referencial:
+   - Toda movimentação deve ter um produto e usuário válidos
+   - Exclusão em cascata mantém consistência
+
+2. Controle de Estoque:
+   - Estoque atual é atualizado via transações
+   - Não permite estoque negativo
+   - Alerta quando abaixo do estoque mínimo
+
+3. Auditoria:
+   - Registra quem fez a movimentação (usuario_id)
+   - Registra quando foi feita (data_movimentacao)
+   - Registra quando foi registrada no sistema (data_registro)
+
+4. Flexibilidade:
+   - Código de barras opcional
+   - Preços opcionais (para produtos sem precificação)
+   - Observações opcionais nas movimentações
+
+5. Segurança:
+   - Senhas sempre criptografadas
+   - Usuários únicos
+   - Códigos de barras únicos (quando informados)
+
+================================================================================
+COMANDOS SQL DE CRIAÇÃO
+================================================================================
+
+-- Criar banco
+CREATE DATABASE mercado_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Usar banco
+USE mercado_db;
+
+-- Tabela usuarios
+CREATE TABLE usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Tabela produtos
+CREATE TABLE produtos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    codigo_barras VARCHAR(50) UNIQUE,
+    categoria VARCHAR(50) NOT NULL,
+    marca VARCHAR(50),
+    preco_custo DECIMAL(10,2),
+    preco_venda DECIMAL(10,2),
+    estoque_atual INT NOT NULL DEFAULT 0,
+    estoque_minimo INT NOT NULL DEFAULT 10,
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Tabela movimentacoes
+CREATE TABLE movimentacoes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    produto_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    tipo ENUM('entrada', 'saida') NOT NULL,
+    quantidade INT NOT NULL,
+    data_movimentacao DATE NOT NULL,
+    data_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    observacao TEXT,
+    FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+================================================================================
+VERSIONAMENTO DO MODELO
+================================================================================
+
+Versão 1.0 (12/11/2025):
+- Modelo inicial com 3 entidades
+- Relacionamentos básicos implementados
+- Suporte completo aos requisitos funcionais
+
+Próximas versões podem incluir:
+- Tabela de fornecedores
+- Tabela de categorias (normalização)
+- Tabela de unidades de medida
+- Tabela de preços históricos
+- Tabela de inventários
+- Tabela de alertas configuráveis
+
+================================================================================
+APROVAÇÃO DO MODELO
+================================================================================
+
+Analista de Sistemas: _________________________ Data: _______________
+DBA: __________________________________ Data: _______________
+Arquiteto de Software: _________________________ Data: _______________
+
+================================================================================

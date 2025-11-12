@@ -1,0 +1,242 @@
+# .htaccess para Sistema de Gestão de Estoque para Mercado
+# Este arquivo configura reescrita de URLs e otimizações de segurança
+
+# ========================================
+# CONFIGURAÇÕES GERAIS
+# ========================================
+
+# Habilitar mod_rewrite
+RewriteEngine On
+
+# Definir diretório base (ajustar conforme instalação)
+# Se o sistema estiver na raiz do servidor, deixar como está
+# Se estiver em subdiretório, ajustar: RewriteBase /sistema_mercado/public/
+RewriteBase /
+
+# ========================================
+# REDIRECIONAMENTOS PRINCIPAIS
+# ========================================
+
+# Redirecionar todas as requisições para index.php se arquivo não existir
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# ========================================
+# CONFIGURAÇÕES DE SEGURANÇA
+# ========================================
+
+# Prevenir acesso direto a arquivos PHP fora de public
+RewriteCond %{REQUEST_URI} ^.*/app/.*\.php$ [NC]
+RewriteRule ^(.*)$ - [F,L]
+
+# Bloquear acesso a arquivos de configuração sensíveis
+<FilesMatch "\.(sql|txt|log|ini|sh|inc|bak|old)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Proteger arquivos de configuração do sistema
+<Files "database.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Prevenir acesso a diretórios sem index
+Options -Indexes
+
+# Bloquear bots maliciosos e scanners de vulnerabilidade
+RewriteCond %{HTTP_USER_AGENT} (libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC]
+RewriteRule .* - [F,L]
+
+# ========================================
+# PREVENÇÃO DE ATAQUES
+# ========================================
+
+# Bloquear tentativas de SQL Injection nas URLs
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} \b(union|select|insert|drop|delete|create|alter|exec|eval|script|javascript)\b [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC]
+RewriteRule .* - [F,L]
+
+# Bloquear tentativas de inclusão de arquivos remotos
+RewriteCond %{QUERY_STRING} (http\:|https\:|ftp\:|php\:|https\:|ftps\:) [NC]
+RewriteRule .* - [F,L]
+
+# Prevenir acesso a arquivos de backup e temporários
+RewriteRule \.(bak|config|sql|log|swp|tmp)$ - [F,L]
+
+# ========================================
+# OTIMIZAÇÕES DE PERFORMANCE
+# ========================================
+
+# Habilitar compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Cache de arquivos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive on
+    
+    # Imagens
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/ico "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    
+    # CSS e JavaScript
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-javascript "access plus 1 week"
+    
+    # Fontes
+    ExpiresByType font/truetype "access plus 1 month"
+    ExpiresByType font/opentype "access plus 1 month"
+    ExpiresByType application/x-font-woff "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    
+    # HTML e outros arquivos dinâmicos (cache menor)
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType application/json "access plus 1 minute"
+</IfModule>
+
+# ========================================
+# CONFIGURAÇÕES DE MIME TYPES
+# ========================================
+
+<IfModule mod_mime.c>
+    # Fontes web
+    AddType font/truetype .ttf
+    AddType font/opentype .otf
+    AddType application/x-font-woff .woff
+    AddType application/x-font-woff2 .woff2
+    
+    # Outros tipos
+    AddType application/json .json
+    AddType application/ld+json .jsonld
+</IfModule>
+
+# ========================================
+# HEADERS DE SEGURANÇA
+# ========================================
+
+<IfModule mod_headers.c>
+    # Prevenir clickjacking
+    Header always append X-Frame-Options SAMEORIGIN
+    
+    # Prevenir MIME type sniffing
+    Header always set X-Content-Type-Options nosniff
+    
+    # Ativar proteção XSS do navegador
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Forçar HTTPS (descomente se usar SSL)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Política de referrer
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy básica (ajustar conforme necessário)
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com fonts.googleapis.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'"
+    
+    # Remover informações do servidor
+    Header always unset Server
+    Header always unset X-Powered-By
+</IfModule>
+
+# ========================================
+# CONFIGURAÇÕES PHP (se mod_php estiver ativo)
+# ========================================
+
+<IfModule mod_php.c>
+    # Ocultar versão do PHP
+    php_flag expose_php off
+    
+    # Configurações de segurança
+    php_flag register_globals off
+    php_flag magic_quotes_gpc off
+    php_flag allow_url_fopen off
+    php_flag allow_url_include off
+    
+    # Limites de upload (ajustar conforme necessário)
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 30
+    php_value max_input_time 30
+    
+    # Configurações de sessão
+    php_value session.cookie_httponly 1
+    php_value session.cookie_secure 0
+    php_value session.use_strict_mode 1
+</IfModule>
+
+# ========================================
+# PÁGINAS DE ERRO PERSONALIZADAS
+# ========================================
+
+ErrorDocument 400 /index.php?action=login
+ErrorDocument 401 /index.php?action=login
+ErrorDocument 403 /index.php?action=login
+ErrorDocument 404 /index.php?action=login
+ErrorDocument 500 /index.php?action=login
+
+# ========================================
+# REGRAS ESPECÍFICAS DO SISTEMA
+# ========================================
+
+# Permitir acesso direto a arquivos CSS, JS, imagens
+RewriteRule ^(css|js|images|fonts)/(.*)$ $1/$2 [L]
+
+# Redirecionar index.php vazio para login ou home
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^index\.php$ index.php?action=default [L]
+
+# ========================================
+# CONFIGURAÇÕES DE DESENVOLVIMENTO
+# ========================================
+
+# Remover comentários abaixo apenas em ambiente de desenvolvimento
+# Para DEBUG, descomente as linhas abaixo:
+
+# RewriteRule ^debug$ index.php?action=debug [L]
+# RewriteRule ^phpinfo$ index.php?action=phpinfo [L]
+
+# ========================================
+# LOGS E MONITORAMENTO
+# ========================================
+
+# Log de rewrite rules (apenas para debug)
+# RewriteLog logs/rewrite.log
+# RewriteLogLevel 3
+
+# ========================================
+# COMENTÁRIOS IMPORTANTES
+# ========================================
+
+# 1. Este arquivo deve estar no diretório /public/ do sistema
+# 2. Ajustar RewriteBase conforme a instalação
+# 3. Testar todas as funcionalidades após aplicar
+# 4. Em produção, remover comentários de debug
+# 5. Configurar SSL e ajustar headers HTTPS se necessário
+# 6. Monitorar logs de erro para ajustes adicionais
+
+# ========================================
+# FIM DO ARQUIVO .htaccess
+# ========================================

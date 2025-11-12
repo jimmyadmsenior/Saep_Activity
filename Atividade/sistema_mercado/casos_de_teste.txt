@@ -1,0 +1,488 @@
+CASOS DE TESTE - SISTEMA DE GESTÃO DE ESTOQUE PARA MERCADO
+================================================================================
+
+Sistema: Gestão de Estoque para Mercado
+Data: 12/11/2025
+Versão: 1.0
+Ambiente: Desenvolvimento/Homologação
+
+================================================================================
+LEGENDA DE STATUS
+================================================================================
+[PASS] - Teste passou
+[FAIL] - Teste falhou  
+[PEND] - Teste pendente
+[BLOC] - Teste bloqueado
+
+================================================================================
+MÓDULO: AUTENTICAÇÃO
+================================================================================
+
+CT001 - Login com credenciais válidas
+Módulo: Autenticação
+Objetivo: Verificar se o login funciona corretamente com dados válidos
+Passos:
+1. Acessar página de login (index.php?action=login)
+2. Inserir usuário: "admin"
+3. Inserir senha: "123456"
+4. Clicar no botão "Entrar"
+Resultado Esperado: Redirecionamento para dashboard com mensagem de sucesso
+Resultado Obtido: _______________
+Status: [    ]
+
+CT002 - Login com usuário inválido
+Módulo: Autenticação
+Objetivo: Verificar tratamento de usuário inexistente
+Passos:
+1. Acessar página de login
+2. Inserir usuário: "usuario_inexistente"
+3. Inserir senha: "123456"
+4. Clicar no botão "Entrar"
+Resultado Esperado: Mensagem de erro "Usuário ou senha incorretos"
+Resultado Obtido: _______________
+Status: [    ]
+
+CT003 - Login com senha inválida
+Módulo: Autenticação
+Objetivo: Verificar tratamento de senha incorreta
+Passos:
+1. Acessar página de login
+2. Inserir usuário: "admin"
+3. Inserir senha: "senha_errada"
+4. Clicar no botão "Entrar"
+Resultado Esperado: Mensagem de erro "Usuário ou senha incorretos"
+Resultado Obtido: _______________
+Status: [    ]
+
+CT004 - Login com campos vazios
+Módulo: Autenticação
+Objetivo: Verificar validação de campos obrigatórios
+Passos:
+1. Acessar página de login
+2. Deixar campos usuário e senha vazios
+3. Clicar no botão "Entrar"
+Resultado Esperado: Mensagem de erro "Usuário e senha são obrigatórios"
+Resultado Obtido: _______________
+Status: [    ]
+
+CT005 - Logout do sistema
+Módulo: Autenticação
+Objetivo: Verificar se logout funciona corretamente
+Passos:
+1. Fazer login no sistema
+2. Clicar no menu do usuário no cabeçalho
+3. Clicar em "Sair"
+Resultado Esperado: Redirecionamento para login com mensagem de sucesso
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: PROTEÇÃO DE ROTAS
+================================================================================
+
+CT006 - Acesso direto sem autenticação
+Módulo: Segurança
+Objetivo: Verificar se páginas internas estão protegidas
+Passos:
+1. Limpar cookies/sessão do navegador
+2. Tentar acessar diretamente: index.php?action=home
+Resultado Esperado: Redirecionamento para login com mensagem de acesso negado
+Resultado Obtido: _______________
+Status: [    ]
+
+CT007 - Sessão expirada
+Módulo: Segurança
+Objetivo: Verificar comportamento com sessão inválida
+Passos:
+1. Fazer login no sistema
+2. Limpar sessão manualmente (destruir $_SESSION)
+3. Tentar acessar uma página interna
+Resultado Esperado: Redirecionamento para login
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: GESTÃO DE PRODUTOS
+================================================================================
+
+CT008 - Cadastro de produto válido
+Módulo: Produtos
+Objetivo: Verificar cadastro de produto com todos os campos
+Passos:
+1. Acessar página de produtos
+2. Clicar em "Novo Produto"
+3. Preencher: Nome="Produto Teste", Categoria="Alimentos", Estoque Atual=10, Estoque Mínimo=5
+4. Clicar em "Salvar"
+Resultado Esperado: Mensagem de sucesso e produto na listagem
+Resultado Obtido: _______________
+Status: [    ]
+
+CT009 - Cadastro com nome vazio
+Módulo: Produtos
+Objetivo: Verificar validação de campo nome obrigatório
+Passos:
+1. Acessar página de produtos
+2. Clicar em "Novo Produto"
+3. Deixar nome vazio, preencher outros campos
+4. Clicar em "Salvar"
+Resultado Esperado: Mensagem de erro sobre nome obrigatório
+Resultado Obtido: _______________
+Status: [    ]
+
+CT010 - Cadastro com categoria vazia
+Módulo: Produtos
+Objetivo: Verificar validação de campo categoria obrigatório
+Passos:
+1. Acessar página de produtos
+2. Clicar em "Novo Produto" 
+3. Preencher nome, deixar categoria vazia
+4. Clicar em "Salvar"
+Resultado Esperado: Mensagem de erro sobre categoria obrigatória
+Resultado Obtido: _______________
+Status: [    ]
+
+CT011 - Cadastro com código de barras duplicado
+Módulo: Produtos
+Objetivo: Verificar validação de unicidade do código de barras
+Passos:
+1. Cadastrar produto com código de barras "123456789"
+2. Tentar cadastrar outro produto com mesmo código
+Resultado Esperado: Mensagem de erro sobre código já existente
+Resultado Obtido: _______________
+Status: [    ]
+
+CT012 - Edição de produto existente
+Módulo: Produtos
+Objetivo: Verificar edição de dados do produto
+Passos:
+1. Na listagem de produtos, clicar no botão de editar
+2. Alterar nome do produto
+3. Clicar em "Salvar"
+Resultado Esperado: Dados atualizados na listagem
+Resultado Obtido: _______________
+Status: [    ]
+
+CT013 - Exclusão de produto
+Módulo: Produtos
+Objetivo: Verificar exclusão de produto
+Passos:
+1. Na listagem de produtos, clicar no botão de excluir
+2. Confirmar exclusão no modal
+Resultado Esperado: Produto removido da listagem
+Resultado Obtido: _______________
+Status: [    ]
+
+CT014 - Busca de produtos por nome
+Módulo: Produtos
+Objetivo: Verificar funcionalidade de busca
+Passos:
+1. Na página de produtos, digitar nome no campo de busca
+2. Clicar em "Buscar"
+Resultado Esperado: Listagem filtrada com produtos encontrados
+Resultado Obtido: _______________
+Status: [    ]
+
+CT015 - Filtro por categoria
+Módulo: Produtos
+Objetivo: Verificar filtro por categoria
+Passos:
+1. Na página de produtos, selecionar categoria no filtro
+2. Clicar em "Buscar"
+Resultado Esperado: Listagem filtrada por categoria selecionada
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: GESTÃO DE ESTOQUE
+================================================================================
+
+CT016 - Movimentação de entrada válida
+Módulo: Estoque
+Objetivo: Verificar registro de entrada de estoque
+Passos:
+1. Acessar página de estoque
+2. Clicar em "Nova Movimentação"
+3. Selecionar produto, tipo "Entrada", quantidade 50
+4. Informar data atual e clicar em "Registrar"
+Resultado Esperado: Estoque atual do produto aumentado em 50 unidades
+Resultado Obtido: _______________
+Status: [    ]
+
+CT017 - Movimentação de saída válida
+Módulo: Estoque
+Objetivo: Verificar registro de saída de estoque
+Passos:
+1. Acessar página de estoque
+2. Selecionar produto com estoque disponível
+3. Registrar saída de 10 unidades
+Resultado Esperado: Estoque atual do produto diminuído em 10 unidades
+Resultado Obtido: _______________
+Status: [    ]
+
+CT018 - Saída maior que estoque disponível
+Módulo: Estoque
+Objetivo: Verificar validação de estoque insuficiente
+Passos:
+1. Selecionar produto com 5 unidades em estoque
+2. Tentar registrar saída de 10 unidades
+Resultado Esperado: Mensagem de erro sobre estoque insuficiente
+Resultado Obtido: _______________
+Status: [    ]
+
+CT019 - Movimentação com quantidade zero
+Módulo: Estoque
+Objetivo: Verificar validação de quantidade mínima
+Passos:
+1. Tentar registrar movimentação com quantidade 0 ou negativa
+Resultado Esperado: Mensagem de erro sobre quantidade inválida
+Resultado Obtido: _______________
+Status: [    ]
+
+CT020 - Movimentação com data futura
+Módulo: Estoque
+Objetivo: Verificar validação de data
+Passos:
+1. Tentar registrar movimentação com data futura
+Resultado Esperado: Mensagem de erro sobre data inválida
+Resultado Obtido: _______________
+Status: [    ]
+
+CT021 - Alerta de estoque baixo
+Módulo: Estoque
+Objetivo: Verificar emissão de alerta quando estoque fica baixo
+Passos:
+1. Produto com estoque mínimo 10 e atual 12
+2. Registrar saída de 5 unidades (ficará com 7)
+Resultado Esperado: Alerta de estoque baixo após movimentação
+Resultado Obtido: _______________
+Status: [    ]
+
+CT022 - Reversão de movimentação
+Módulo: Estoque
+Objetivo: Verificar funcionalidade de reverter movimentação
+Passos:
+1. Registrar uma movimentação qualquer
+2. No histórico, clicar em reverter
+3. Confirmar reversão
+Resultado Esperado: Estoque volta ao valor anterior e movimentação é removida
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: SEGURANÇA
+================================================================================
+
+CT023 - Teste de SQL Injection
+Módulo: Segurança
+Objetivo: Verificar proteção contra SQL Injection
+Passos:
+1. No campo de busca de produtos, inserir: ' OR 1=1 --
+2. Executar busca
+Resultado Esperado: Busca normal sem executar código malicioso
+Resultado Obtido: _______________
+Status: [    ]
+
+CT024 - Teste de XSS (Cross-Site Scripting)
+Módulo: Segurança
+Objetivo: Verificar proteção contra XSS
+Passos:
+1. Cadastrar produto com nome: <script>alert('XSS')</script>
+2. Visualizar produto na listagem
+Resultado Esperado: Script não executado, código exibido como texto
+Resultado Obtido: _______________
+Status: [    ]
+
+CT025 - Validação de prepared statements
+Módulo: Segurança
+Objetivo: Verificar uso de prepared statements
+Passos:
+1. Analisar código fonte dos Models
+2. Verificar se todas as consultas usam prepare() e bindParam()
+Resultado Esperado: Todas as consultas SQL usam prepared statements
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: INTERFACE E USABILIDADE
+================================================================================
+
+CT026 - Responsividade mobile
+Módulo: Interface
+Objetivo: Verificar funcionamento em dispositivos móveis
+Passos:
+1. Acessar sistema em dispositivo mobile ou simular no navegador
+2. Testar navegação e funcionalidades principais
+Resultado Esperado: Interface adaptada e funcional em mobile
+Resultado Obtido: _______________
+Status: [    ]
+
+CT027 - Validação HTML5
+Módulo: Interface
+Objetivo: Verificar validação de formulários no cliente
+Passos:
+1. Tentar submeter formulário com campos obrigatórios vazios
+2. Verificar se navegador exibe mensagens de validação
+Resultado Esperado: Validação HTML5 funcionando antes do envio
+Resultado Obtido: _______________
+Status: [    ]
+
+CT028 - Flash messages
+Módulo: Interface
+Objetivo: Verificar exibição de mensagens de feedback
+Passos:
+1. Realizar ações que geram mensagens (cadastro, edição, etc.)
+2. Verificar se mensagens aparecem e desaparecem automaticamente
+Resultado Esperado: Mensagens exibidas corretamente e auto-removidas
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: ALGORITMO BUBBLE SORT
+================================================================================
+
+CT029 - Ordenação alfabética de produtos
+Módulo: Algoritmo
+Objetivo: Verificar implementação do Bubble Sort
+Passos:
+1. Cadastrar produtos com nomes: "Zebra", "Abelha", "Macaco"
+2. Acessar página de estoque
+3. Verificar ordem de exibição dos produtos
+Resultado Esperado: Produtos ordenados: "Abelha", "Macaco", "Zebra"
+Resultado Obtido: _______________
+Status: [    ]
+
+CT030 - Ordenação com caracteres especiais
+Módulo: Algoritmo
+Objetivo: Verificar ordenação com acentos
+Passos:
+1. Cadastrar produtos: "Âmbar", "Zebra", "Água"
+2. Verificar ordenação na página de estoque
+Resultado Esperado: Ordenação correta considerando acentos
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: RELATÓRIOS E EXPORTAÇÃO
+================================================================================
+
+CT031 - Exportação CSV de produtos
+Módulo: Relatórios
+Objetivo: Verificar geração de relatório em CSV
+Passos:
+1. Na página de produtos, clicar em "Exportar CSV"
+2. Verificar download do arquivo
+3. Abrir arquivo e validar conteúdo
+Resultado Esperado: Arquivo CSV baixado com todos os produtos
+Resultado Obtido: _______________
+Status: [    ]
+
+CT032 - Exportação CSV de movimentações
+Módulo: Relatórios
+Objetivo: Verificar relatório de movimentações
+Passos:
+1. Na página de estoque, clicar em "Exportar Relatório"
+2. Definir período e clicar em "Exportar CSV"
+3. Verificar conteúdo do arquivo
+Resultado Esperado: Arquivo CSV com movimentações do período
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+MÓDULO: PERFORMANCE E TRANSAÇÕES
+================================================================================
+
+CT033 - Transação de movimentação
+Módulo: Performance
+Objetivo: Verificar uso de transações PDO
+Passos:
+1. Simular erro durante movimentação (interromper processo)
+2. Verificar se dados ficaram consistentes
+Resultado Esperado: Rollback automático em caso de erro
+Resultado Obtido: _______________
+Status: [    ]
+
+CT034 - Múltiplas movimentações simultâneas
+Módulo: Performance
+Objetivo: Verificar concorrência de operações
+Passos:
+1. Simular duas movimentações simultâneas no mesmo produto
+2. Verificar consistência do estoque final
+Resultado Esperado: Estoque final correto, sem conflitos
+Resultado Obtido: _______________
+Status: [    ]
+
+CT035 - Carga de dados grande
+Módulo: Performance
+Objetivo: Verificar performance com muitos registros
+Passos:
+1. Inserir 1000+ produtos no sistema
+2. Testar navegação e busca
+3. Verificar tempo de resposta
+Resultado Esperado: Sistema responsivo mesmo com muitos dados
+Resultado Obtido: _______________
+Status: [    ]
+
+================================================================================
+RESUMO DE EXECUÇÃO
+================================================================================
+
+Total de Casos de Teste: 35
+Casos Executados: _____
+Casos com Sucesso: _____
+Casos com Falha: _____
+Casos Pendentes: _____
+Casos Bloqueados: _____
+
+Percentual de Sucesso: _____%
+
+================================================================================
+EVIDÊNCIAS DE TESTE
+================================================================================
+
+Para cada caso de teste executado, anexar:
+- Screenshots das telas
+- Logs de erro (se houver)
+- Dados de entrada utilizados
+- Resultados obtidos
+
+================================================================================
+AMBIENTE DE TESTE
+================================================================================
+
+Servidor Web: _______________
+Versão PHP: _______________
+Versão MySQL: _______________
+Navegador: _______________
+Sistema Operacional: _______________
+Data de Execução: _______________
+
+================================================================================
+RESPONSÁVEIS
+================================================================================
+
+Analista de Teste: _________________________ Data: _______________
+Desenvolvedor: _________________________ Data: _______________
+Aprovador: _________________________ Data: _______________
+
+================================================================================
+OBSERVAÇÕES GERAIS
+================================================================================
+
+- Todos os testes devem ser executados em ambiente limpo
+- Backup do banco deve ser realizado antes dos testes
+- Logs de erro devem ser monitorados durante execução
+- Testes de segurança são críticos e não podem falhar
+- Documentar qualquer comportamento inesperado
+
+================================================================================
+CRITÉRIOS DE ACEITAÇÃO
+================================================================================
+
+Para aprovação do sistema:
+- Mínimo 95% dos casos de teste devem passar
+- Nenhum teste de segurança pode falhar
+- Performance deve ser aceitável (< 3 segundos por operação)
+- Interface deve ser responsiva em dispositivos móveis
+- Todas as validações devem funcionar corretamente
+
+================================================================================
