@@ -1,4 +1,5 @@
-REQUISITOS FUNCIONAIS - SISTEMA DE GESTÃO DE ESTOQUE PARA MERCADO (TOP 12)
+
+REQUISITOS FUNCIONAIS - SISTEMA DE GESTÃO DE ESTOQUE PARA MERCADO
 ================================================================================
 
 Sistema: Gestão de Estoque para Mercado
@@ -10,143 +11,18 @@ OS 12 REQUISITOS FUNCIONAIS MAIS IMPORTANTES
 ================================================================================
 
 RF001 - O sistema deve permitir que usuários façam login com usuário e senha
-        • Funcionalidade essencial para autenticação e segurança do sistema
-
 RF002 - O sistema deve validar credenciais no banco de dados usando prepared statements
-        • Segurança crítica contra SQL Injection e validação de usuários
-
 RF003 - O sistema deve armazenar senhas criptografadas usando password_hash()
-        • Proteção obrigatória de dados sensíveis dos usuários
-
 RF004 - O sistema deve permitir cadastro de produtos com nome, código de barras, categoria, marca, preços e estoques
-        • Funcionalidade CORE do sistema - gestão de produtos é o objetivo principal
-
 RF005 - O sistema deve permitir listagem de todos os produtos
-        • Visualização básica e essencial dos produtos cadastrados
-
 RF006 - O sistema deve permitir edição de dados de produtos existentes
-        • Manutenção e atualização de informações dos produtos
-
 RF007 - O sistema deve calcular e exibir status do estoque (OK, Baixo, Esgotado)
-        • Controle crítico para gestão de estoque e alertas
-
 RF008 - O sistema deve registrar movimentações de entrada e saída de estoque
-        • Rastreabilidade e controle das operações de estoque
-
 RF009 - O sistema deve atualizar automaticamente estoque após movimentações
-        • Integridade e consistência dos dados de estoque
-
 RF010 - O sistema deve exibir dashboard com estatísticas de produtos e estoque
-        • Visão gerencial e relatórios essenciais para tomada de decisão
-
 RF011 - O sistema deve listar produtos ordenados alfabeticamente usando algoritmo Bubble Sort
-        • Implementação do algoritmo de ordenação conforme especificado
-
 RF012 - O sistema deve proteger todas as páginas internas com verificação de autenticação
-        • Segurança fundamental - acesso restrito apenas a usuários autenticados
-RF030 - O sistema deve categorizar produtos nas categorias: Alimentos, Bebidas, Higiene, Limpeza, Hortifruti, Padaria, Açougue, Outros
 
 ================================================================================
-MÓDULO: GESTÃO DE ESTOQUE
-================================================================================
-
-RF031 - O sistema deve permitir registro de movimentações de entrada e saída de estoque
-RF032 - O sistema deve validar que movimentações tenham produto, tipo, quantidade e data
-RF033 - O sistema deve atualizar automaticamente o estoque atual após cada movimentação
-RF034 - O sistema deve usar transações PDO para garantir consistência das operações de estoque
-RF035 - O sistema deve impedir saídas que resultem em estoque negativo
-RF036 - O sistema deve permitir inclusão de observações nas movimentações
-RF037 - O sistema deve registrar usuário responsável pela movimentação
-RF038 - O sistema deve registrar data/hora da movimentação e do registro
-RF039 - O sistema deve permitir reversão de movimentações incorretas
-RF040 - O sistema deve listar histórico das últimas 20 movimentações
-RF041 - O sistema deve permitir filtro de movimentações por produto
-RF042 - O sistema deve permitir filtro de movimentações por período
-RF043 - O sistema deve exibir alertas quando estoque ficar abaixo do mínimo
-RF044 - O sistema deve exportar relatório de movimentações em formato CSV
-RF045 - O sistema deve calcular estatísticas de movimentação por período
-
-================================================================================
-MÓDULO: ALERTAS E NOTIFICAÇÕES
-================================================================================
-
-RF046 - O sistema deve identificar produtos com estoque zerado (esgotados)
-RF047 - O sistema deve identificar produtos com estoque abaixo do mínimo
-RF048 - O sistema deve exibir lista de produtos com estoque baixo no dashboard
-RF049 - O sistema deve emitir alerta após movimentação que deixe estoque baixo
-RF050 - O sistema deve destacar visualmente produtos com problemas de estoque
-RF051 - O sistema deve contar e exibir quantidade de produtos com estoque baixo
-
-================================================================================
-MÓDULO: DASHBOARD E RELATÓRIOS
-================================================================================
-
-RF052 - O sistema deve exibir painel principal com estatísticas gerais
-RF053 - O sistema deve mostrar total de produtos cadastrados
-RF054 - O sistema deve mostrar quantidades por status de estoque (OK, Baixo, Esgotado)
-RF055 - O sistema deve exibir últimas movimentações no dashboard
-RF056 - O sistema deve mostrar produtos com estoque baixo no dashboard
-RF057 - O sistema deve calcular e exibir estatísticas de movimentação dos últimos 30 dias
-RF058 - O sistema deve listar produtos mais movimentados por período
-RF059 - O sistema deve contar produtos por categoria
-RF060 - O sistema deve permitir atualização em lote do estoque mínimo por categoria
-
-================================================================================
-MÓDULO: INTERFACE E NAVEGAÇÃO
-================================================================================
-
-RF061 - O sistema deve ter menu de navegação com opções Dashboard, Produtos e Estoque
-RF062 - O sistema deve exibir nome do usuário logado no cabeçalho
-RF063 - O sistema deve permitir logout através do menu do usuário
-RF064 - O sistema deve usar modais para formulários de cadastro e edição
-RF065 - O sistema deve validar formulários no lado cliente (HTML5) e servidor (PHP)
-RF066 - O sistema deve exibir mensagens de sucesso, erro e aviso (flash messages)
-RF067 - O sistema deve ser responsivo para dispositivos móveis
-RF068 - O sistema deve ter paginação ou scroll infinito para listas grandes
-RF069 - O sistema deve permitir busca/filtro em tempo real nas listagens
-
-================================================================================
-MÓDULO: SEGURANÇA E VALIDAÇÃO
-================================================================================
-
-RF070 - O sistema deve usar prepared statements em todas as consultas SQL
-RF071 - O sistema deve aplicar htmlspecialchars() em todas as saídas de dados
-RF072 - O sistema deve validar tipos de dados antes de processar
-RF073 - O sistema deve sanitizar entrada de dados do usuário
-RF074 - O sistema deve implementar proteção contra SQL Injection
-RF075 - O sistema deve implementar proteção contra XSS (Cross-Site Scripting)
-RF076 - O sistema deve usar transações para operações críticas
-RF077 - O sistema deve registrar logs de erros para depuração
-RF078 - O sistema deve validar permissões de acesso às funcionalidades
-
-================================================================================
-MÓDULO: PADRÕES E ARQUITETURA
-================================================================================
-
-RF079 - O sistema deve seguir arquitetura MVC (Model-View-Controller)
-RF080 - O sistema deve usar Front Controller como ponto único de entrada
-RF081 - O sistema deve implementar padrão POST-Redirect-GET
-RF082 - O sistema deve usar roteamento baseado em parâmetros GET
-RF083 - O sistema deve separar lógica de negócio (Models) da apresentação (Views)
-RF084 - O sistema deve centralizar controle de acesso nos Controllers
-RF085 - O sistema deve usar Singleton para conexão com banco de dados
-RF086 - O sistema deve tratar erros de forma centralizada
-RF087 - O sistema deve usar autoload ou includes organizados
-
-================================================================================
-TOTAL: 87 REQUISITOS FUNCIONAIS
-================================================================================
-
-OBSERVAÇÕES:
-- Todos os requisitos são de implementação obrigatória
-- Sistema deve funcionar com PHP puro (sem frameworks)
-- Banco de dados MySQL com PDO
-- Interface responsiva com Bootstrap
-- Algoritmo Bubble Sort obrigatório para ordenação
-- Documentação completa obrigatória
-
-================================================================================
-APROVAÇÃO:
-Data: _______________
-Responsável: _________________________
+TOTAL: 12 REQUISITOS FUNCIONAIS
 ================================================================================
